@@ -137,11 +137,35 @@ const awards = [
   },
 ];
 
+const posters = [
+  {
+    title: "Event Announcement",
+    date: "April 2, 2026",
+    image: "/posters/EVENT ANNOUNCEMENT.pdf.png",
+    href: "/posters/EVENT ANNOUNCEMENT.pdf",
+    alt: "One Piece event announcement poster",
+  },
+  {
+    title: "Round Announcement",
+    date: "April 2, 2026",
+    image: "/posters/ROUND ANNOUNCEMENT.pdf.png",
+    href: "/posters/ROUND ANNOUNCEMENT.pdf",
+    alt: "One Piece round announcement poster",
+  },
+  {
+    title: "Registration",
+    date: "April 2, 2026",
+    image: "/posters/REGISTRATION.pdf.png",
+    href: "/posters/REGISTRATION.pdf",
+    alt: "One Piece registration poster",
+  },
+];
+
 const partners = [
   {
     label: "Media & Energy Partner",
     name: "Sucksi",
-    logo: "/logos/sucksi-linkedin.png",
+    logo: "/logos/processed/sucksi-logo-transparent.png",
     logoAlt: "Sucksi logo",
     logoTheme: "dark",
     text: "Amplifying the summit story, founder energy, and the live event atmosphere around the voyage.",
@@ -151,16 +175,32 @@ const partners = [
     name: "SpazorLabs",
     logo: "/logos/spazorlabs-logo.png",
     logoAlt: "SpazorLabs logo",
-    logoTheme: "light",
+    logoTheme: "transparent",
     text: "Backing the event with opportunity pathways for standout builders, operators, and startup-ready talent.",
   },
   {
     label: "Platform Partner",
     name: "GradeX",
-    logo: "/logos/gradex-logo.png",
+    logo: "/logos/processed/gradex-logo-transparent.png",
     logoAlt: "GradeX logo",
     logoTheme: "transparent",
     text: "The SRMIST student platform behind attendance, timetable, marks, exam support, and campus utility workflows.",
+  },
+  {
+    label: "LegalTech Partner",
+    name: "Turn2Law",
+    logo: "/logos/processed/turn2law-logo-transparent.png",
+    logoAlt: "Turn2Law logo",
+    logoTheme: "transparent",
+    text: "An AI-assisted legal platform focused on lawyer matching, legal guidance, and document drafting for Indian users.",
+  },
+  {
+    label: "Mobility Media Partner",
+    name: "6Pistons",
+    logo: "/logos/processed/6pistons-logo-transparent.png",
+    logoAlt: "6Pistons logo",
+    logoTheme: "transparent",
+    text: "An automotive and mobility media brand covering performance culture, enthusiast storytelling, and community reach.",
   },
 ];
 
@@ -225,6 +265,7 @@ const ruleGroups = [
 function App() {
   const rootRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [backgroundVideo, setBackgroundVideo] = useState(() => {
     if (typeof window !== "undefined" && window.matchMedia("(max-width: 820px)").matches) {
       return "/media/one-piece-phone-bg.mp4";
@@ -261,10 +302,25 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    if (typeof document === "undefined") {
+      return undefined;
+    }
+
+    const { body } = document;
+    const previousOverflow = body.style.overflow;
+    body.style.overflow = isLoading ? "hidden" : previousOverflow;
+
+    return () => {
+      body.style.overflow = previousOverflow;
+    };
+  }, [isLoading]);
+
   useLayoutEffect(() => {
     const media = gsap.matchMedia();
     const ctx = gsap.context(() => {
       const intro = gsap.timeline({
+        paused: true,
         defaults: {
           duration: 0.9,
           ease: "power3.out",
@@ -296,6 +352,70 @@ function App() {
           },
           "-=0.65",
         );
+
+      if (typeof window !== "undefined") {
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        if (prefersReducedMotion) {
+          gsap.to(".site-loader", {
+            autoAlpha: 0,
+            duration: 0.14,
+            delay: 0.04,
+            onComplete: () => setIsLoading(false),
+          });
+          intro.play(0);
+        } else {
+          gsap
+            .timeline()
+            .set(".site-loader", { autoAlpha: 1 })
+            .fromTo(
+              ".site-loader-image",
+              {
+                scale: 1.04,
+                xPercent: 0,
+                yPercent: 0,
+              },
+              {
+                scale: 1,
+                xPercent: 0,
+                yPercent: 0,
+                duration: 0.55,
+                ease: "power2.out",
+              },
+            )
+            .from(
+              ".site-loader-copy > *",
+              {
+                opacity: 0,
+                y: 20,
+                stagger: 0.08,
+                duration: 0.16,
+              },
+              "-=0.42",
+            )
+            .to(
+              ".site-loader-copy",
+              {
+                opacity: 0,
+                y: -26,
+                duration: 0.12,
+                ease: "power2.in",
+              },
+              "+=0",
+            )
+            .to(
+              ".site-loader",
+              {
+                autoAlpha: 0,
+                duration: 0.18,
+                ease: "power2.inOut",
+                onComplete: () => setIsLoading(false),
+              },
+              "-=0.01",
+            )
+            .add(() => intro.play(0), "-=0.02");
+        }
+      }
 
       gsap.utils.toArray(".reveal").forEach((section, index) => {
         gsap.from(section, {
@@ -347,6 +467,24 @@ function App() {
 
   return (
     <div className="site-shell" ref={rootRef}>
+      {isLoading ? (
+        <div className="site-loader" aria-hidden="true">
+          <div className="site-loader-poster">
+            <img
+              alt=""
+              className="site-loader-image"
+              src="/posters/EVENT ANNOUNCEMENT.pdf.png"
+            />
+            <div className="site-loader-shroud" />
+          </div>
+          <div className="site-loader-copy">
+            <p className="site-loader-kicker">Opening Poster</p>
+            <h2>ONE PIECE</h2>
+            <p>Treasure Hunt for Unicorns</p>
+          </div>
+        </div>
+      ) : null}
+
       <div className="site-video-shell" aria-hidden="true">
         <video autoPlay className="site-video" loop muted playsInline preload="metadata">
           <source src={backgroundVideo} type="video/mp4" />
@@ -383,6 +521,9 @@ function App() {
           <a href="#schedule" onClick={() => setMenuOpen(false)}>
             Schedule
           </a>
+          <a href="#posters" onClick={() => setMenuOpen(false)}>
+            Posters
+          </a>
           <a href="#rules" onClick={() => setMenuOpen(false)}>
             Rules
           </a>
@@ -409,6 +550,20 @@ function App() {
               mutiny, and return as rebuilt ventures for the final boardroom.
             </p>
 
+            <div className="hero-actions">
+              <a
+                className="button button-primary"
+                href={registrationUrl}
+                rel="noreferrer"
+                target="_blank"
+              >
+                Register
+              </a>
+              <a className="button button-secondary" href="#rules">
+                Rules
+              </a>
+            </div>
+
             <div className="pricing-signal">
               {pricingBands.map((band) => (
                 <article className="pricing-card" key={band.label}>
@@ -419,20 +574,6 @@ function App() {
                   <p className="pricing-card-detail">{band.detail}</p>
                 </article>
               ))}
-            </div>
-
-            <div className="hero-actions">
-              <a
-                className="button button-primary"
-                href={registrationUrl}
-                rel="noreferrer"
-                target="_blank"
-              >
-                Set Sail & Register
-              </a>
-              <a className="button button-secondary" href="#rules">
-                View Logbook
-              </a>
             </div>
 
             <div className="stats-row">
@@ -584,6 +725,42 @@ function App() {
           </div>
         </section>
 
+        <section className="section reveal" id="posters">
+          <div className="posters-panel">
+            <div className="section-heading section-heading-split">
+              <div>
+                <p className="eyebrow">Latest Posters</p>
+                <h2>Fresh drops from the voyage deck</h2>
+              </div>
+            </div>
+
+            <div className="posters-marquee">
+              <div className="posters-track">
+                {[...posters, ...posters].map((poster, index) => (
+                  <article
+                    aria-hidden={index >= posters.length}
+                    className="poster-card"
+                    key={`${poster.title}-${index}`}
+                  >
+                    <a
+                      className="poster-preview"
+                      href={poster.href}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      <img alt={poster.alt} src={poster.image} />
+                    </a>
+                    <div className="poster-card-copy">
+                      <h3>{poster.title}</h3>
+                      <p className="poster-date">{poster.date}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="section reveal" id="rules">
           <div className="section-heading section-heading-split">
             <div>
@@ -646,17 +823,25 @@ function App() {
             </p>
           </div>
 
-            <div className="partners-grid">
-              {partners.map((partner) => (
-                <article className="partner-card" key={partner.name}>
-                  <p className="card-tag">{partner.label}</p>
-                  <div className={`partner-logo-box partner-logo-box-${partner.logoTheme}`}>
-                    <img alt={partner.logoAlt} className="partner-logo" src={partner.logo} />
-                  </div>
-                  <h3>{partner.name}</h3>
-                  <p>{partner.text}</p>
-                </article>
-              ))}
+            <div className="partners-marquee">
+              <div className="partners-track">
+                {[...partners, ...partners].map((partner, index) => (
+                  <article
+                    aria-hidden={index >= partners.length}
+                    className="partner-pill"
+                    key={`${partner.name}-${index}`}
+                  >
+                    <div className={`partner-logo-box partner-logo-box-${partner.logoTheme}`}>
+                      <img alt={partner.logoAlt} className="partner-logo" src={partner.logo} />
+                    </div>
+                    <div className="partner-pill-copy">
+                      <p className="card-tag">{partner.label}</p>
+                      <h3>{partner.name}</h3>
+                      <p className="partner-pill-text">{partner.text}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
             </div>
           </div>
         </section>
