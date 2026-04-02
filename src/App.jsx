@@ -4,6 +4,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const registrationUrl =
+  "https://unstop.com/competitions/onepiece-treasure-hunt-for-unicorns-ieee-computer-society-srmist-1669384";
+
 const heroFacts = ["Turing Hall", "One-day summit", "UG + PG founders", "1-5 founders"];
 
 const pricingBands = [
@@ -386,7 +389,7 @@ function App() {
           <a href="#partners" onClick={() => setMenuOpen(false)}>
             Partners
           </a>
-          <a href="#register" onClick={() => setMenuOpen(false)}>
+          <a href={registrationUrl} onClick={() => setMenuOpen(false)} rel="noreferrer" target="_blank">
             Register
           </a>
         </nav>
@@ -419,7 +422,12 @@ function App() {
             </div>
 
             <div className="hero-actions">
-              <a className="button button-primary" href="#register">
+              <a
+                className="button button-primary"
+                href={registrationUrl}
+                rel="noreferrer"
+                target="_blank"
+              >
                 Set Sail & Register
               </a>
               <a className="button button-secondary" href="#rules">
@@ -662,6 +670,16 @@ function App() {
                 Open to UG and PG student founders with prototype or MVP-stage startups. Separate
                 pricing applies for SRMIST KTR and external teams.
               </p>
+              <div className="cta-actions">
+                <a
+                  className="button button-primary"
+                  href={registrationUrl}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Register on Unstop
+                </a>
+              </div>
             </div>
 
             <div className="cta-meta">

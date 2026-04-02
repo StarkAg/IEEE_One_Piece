@@ -1088,6 +1088,11 @@ select {
 
 .timeline-time {
   margin: 0 0 0.6rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04rem;
+  color: #f3d795;
 }
 
 #awards .section-heading {
@@ -1131,7 +1136,7 @@ select {
 
 #partners {
   padding-top: 2rem;
-  padding-bottom: 0.8rem;
+  padding-bottom: 0;
   background: transparent;
 }
 
@@ -1141,7 +1146,7 @@ select {
 }
 
 #partners .section-heading {
-  margin-bottom: 0.1rem;
+  margin-bottom: 0.65rem;
 }
 
 #partners .section-heading-split {
@@ -1316,7 +1321,7 @@ select {
 
 #register {
   position: relative;
-  padding-top: 1.5rem;
+  padding-top: 1.25rem;
 }
 
 .cta-panel {
@@ -1329,6 +1334,10 @@ select {
     radial-gradient(circle at top right, rgba(233, 193, 118, 0.1), transparent 22%),
     linear-gradient(180deg, rgba(30, 21, 16, 0.88), rgba(10, 8, 7, 0.94)),
     rgba(24, 19, 16, 0.84);
+}
+
+.cta-actions {
+  margin-top: 1.35rem;
 }
 
 .cta-meta {
@@ -1562,7 +1571,7 @@ select {
   }
 
   #register {
-    padding-top: 1rem;
+    padding-top: 0.9rem;
   }
 
   .pricing-card {
