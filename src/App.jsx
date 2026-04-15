@@ -12,17 +12,11 @@ const heroFacts = ["Turing Hall", "One-day summit", "UG + PG founders", "1-5 fou
 const pricingBands = [
   {
     label: "SRMIST KTR Students",
-    price: "₹249 per team",
+    originalPrice: "₹249",
+    price: "₹149 per team",
     offer: "Coupon Code",
-    code: "TOP30",
-    detail: "First 30 teams get tickets at ₹199",
-  },
-  {
-    label: "External Students",
-    price: "₹299 per team",
-    offer: "Coupon Code",
-    code: "EARLYBIRD50",
-    detail: "Get tickets at ₹249",
+    code: "TOP40",
+    detail: "Offer price",
   },
 ];
 
@@ -214,8 +208,7 @@ const ruleGroups = [
   {
     label: "Registration & Conduct",
     items: [
-      "SRMIST KTR teams register at ₹249 per team, with TOP30 unlocking ₹199 for the first 30 teams.",
-      "External teams register at ₹299 per team, with EARLYBIRD50 unlocking ₹249 tickets.",
+      "SRMIST KTR teams can register at ₹149 per team using TOP40.",
       "Every startup may compete with 1 to 5 registered members.",
       "Harassment, intimidation, or disruptive conduct during negotiations can lead to immediate disqualification.",
     ],
@@ -530,6 +523,9 @@ function App() {
           <a href="#partners" onClick={() => setMenuOpen(false)}>
             Partners
           </a>
+          <a href="/quiz/index.html" onClick={() => setMenuOpen(false)}>
+            Quiz
+          </a>
           <a href={registrationUrl} onClick={() => setMenuOpen(false)} rel="noreferrer" target="_blank">
             Register
           </a>
@@ -559,6 +555,9 @@ function App() {
               >
                 Register
               </a>
+              <a className="button button-secondary" href="/quiz/index.html">
+                Character Quiz
+              </a>
               <a className="button button-secondary" href="#rules">
                 Rules
               </a>
@@ -568,7 +567,10 @@ function App() {
               {pricingBands.map((band) => (
                 <article className="pricing-card" key={band.label}>
                   <p className="pricing-card-label">{band.label}</p>
-                  <strong>{band.price}</strong>
+                  <div className="pricing-card-price">
+                    <span className="pricing-card-original">{band.originalPrice}</span>
+                    <strong>{band.price}</strong>
+                  </div>
                   <p className="pricing-card-offer">{band.offer}</p>
                   <p className="pricing-card-code">{band.code}</p>
                   <p className="pricing-card-detail">{band.detail}</p>
@@ -863,6 +865,9 @@ function App() {
                   target="_blank"
                 >
                   Register on Unstop
+                </a>
+                <a className="button button-secondary" href="/quiz/index.html">
+                  Try the Character Quiz
                 </a>
               </div>
             </div>

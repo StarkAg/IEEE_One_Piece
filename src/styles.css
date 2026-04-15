@@ -537,11 +537,27 @@ select {
 
 .pricing-card-label,
 .pricing-card strong,
+.pricing-card-price,
+.pricing-card-original,
 .pricing-card-offer,
 .pricing-card-code,
 .pricing-card-detail {
   position: relative;
   z-index: 1;
+}
+
+.pricing-card-price {
+  margin-top: 0.35rem;
+}
+
+.pricing-card-original {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: rgba(245, 237, 216, 0.58);
+  font-size: 0.92rem;
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgba(233, 193, 118, 0.8);
 }
 
 .pricing-card-label,
@@ -559,7 +575,6 @@ select {
 
 .pricing-card strong {
   display: block;
-  margin-top: 0.35rem;
   font-family: "Pirata One", serif;
   font-size: clamp(1.35rem, 2.5vw, 1.8rem);
   font-weight: 400;
@@ -1711,6 +1726,9 @@ select {
 }
 
 .cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
   margin-top: 1.35rem;
 }
 

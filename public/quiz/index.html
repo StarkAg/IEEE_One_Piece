@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ONE PIECE — Character Knowledge Trial</title>
+  <meta name="description" content="Choose a One Piece character and play a preloaded 10-question trivia deck. Earn treasure coupon codes based on your score." />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☠️</text></svg>" />
+  <link rel="stylesheet" href="/quiz/style.css" />
+</head>
+<body>
+
+<!-- Fixed Ocean Background (for non-home views) -->
+<div class="ocean-bg" id="ocean-bg" aria-hidden="true">
+  <div class="stars" id="stars-el"></div>
+  <div class="particles" id="particles-el"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     VIEW 1 — HOME
+══════════════════════════════════════════════════ -->
+<section id="view-home" class="view" role="main">
+
+  <!-- Hero Background Image -->
+  <div class="hero-bg" aria-hidden="true"></div>
+
+  <!-- Floating Crew Cards -->
+  <div class="crew-float crew-tl" aria-hidden="true">
+    <span class="crew-emoji" style="color:#e8511a;">🎩</span>
+    <div class="crew-bar"></div>
+    <div class="crew-name">Monkey D. Luffy</div>
+    <div class="crew-title">Future Pirate King</div>
+    <div class="crew-bounty">₿ 3,000,000,000</div>
+  </div>
+
+  <div class="crew-float crew-tr" aria-hidden="true">
+    <span class="crew-emoji" style="color:#1abc9c;">⚔️</span>
+    <div class="crew-bar" style="background: linear-gradient(90deg,#0e7c56,#1abc9c);"></div>
+    <div class="crew-name">Roronoa Zoro</div>
+    <div class="crew-title">World's Greatest Swordsman</div>
+    <div class="crew-bounty">₿ 1,111,000,000</div>
+  </div>
+
+  <div class="crew-float crew-ml" aria-hidden="true">
+    <span class="crew-emoji" style="color:#f39c12;">🗺️</span>
+    <div class="crew-bar" style="background: linear-gradient(90deg,#c37d0a,#f39c12);"></div>
+    <div class="crew-name">Nami</div>
+    <div class="crew-title">Navigator & Weather Witch</div>
+    <div class="crew-bounty">₿ 366,000,000</div>
+  </div>
+
+  <div class="crew-float crew-mr" aria-hidden="true">
+    <span class="crew-emoji" style="color:#8e44ad;">📖</span>
+    <div class="crew-bar" style="background: linear-gradient(90deg,#6c3483,#8e44ad);"></div>
+    <div class="crew-name">Nico Robin</div>
+    <div class="crew-title">Devil Child</div>
+    <div class="crew-bounty">₿ 930,000,000</div>
+  </div>
+
+  <div class="crew-float crew-bl" aria-hidden="true">
+    <span class="crew-emoji" style="color:#f1c40f;">🔥</span>
+    <div class="crew-bar" style="background: linear-gradient(90deg,#c4a10c,#f1c40f);"></div>
+    <div class="crew-name">Sanji</div>
+    <div class="crew-title">Vinsmoke Sanji</div>
+    <div class="crew-bounty">₿ 1,032,000,000</div>
+  </div>
+
+  <div class="crew-float crew-br" aria-hidden="true">
+    <span class="crew-emoji" style="color:#e67e22;">🌟</span>
+    <div class="crew-bar" style="background: linear-gradient(90deg,#b96318,#e67e22);"></div>
+    <div class="crew-name">Portgas D. Ace</div>
+    <div class="crew-title">Fire Fist Ace</div>
+    <div class="crew-bounty">₿ 550,000,000</div>
+  </div>
+
+  <!-- Center Content -->
+  <div class="hero-center">
+
+    <!-- Jolly Roger -->
+    <div class="jolly-roger" aria-hidden="true">☠️</div>
+
+    <!-- Title -->
+    <div class="hero-eyeline" aria-hidden="true"><span>⚓</span></div>
+    <h1 class="hero-title">ONE PIECE</h1>
+    <p class="hero-subtitle">Character Knowledge Trial</p>
+    <div class="hero-eyeline" aria-hidden="true"><span>🗡️</span></div>
+
+    <p class="hero-tagline">
+      Choose a <em>One Piece character</em> and load a precharted quiz deck.<br/>
+      The page ships with <strong>10-question static trials</strong> for many major pirates.<br/>
+      Answer wisely — a treasure awaits the worthy!
+    </p>
+
+    <!-- Input Card -->
+    <div class="input-card">
+      <form id="home-form" novalidate>
+        <label class="input-label" for="character-input">⚔️ Who Shall Face the Trial?</label>
+
+        <select
+          id="character-input"
+          class="character-input"
+          required
+          aria-label="Choose a character"
+        >
+          <option value="">Select a character...</option>
+        </select>
+        <p class="hint-text">🌊 Pick from the preloaded One Piece character list. Each run draws a different random 10-question deck.</p>
+
+        <div id="home-error" class="error-box" role="alert"></div>
+
+        <button type="submit" id="start-btn" class="btn-primary" aria-label="Start the quiz">
+          ⚓ &nbsp;Set Sail — Start Quiz
+        </button>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     VIEW 2 — LOADING
+══════════════════════════════════════════════════ -->
+<section id="view-loading" class="view" role="status" aria-label="Loading questions">
+  <div class="loading-wrap">
+    <div class="compass-ring" aria-hidden="true">
+      <span class="compass-emoji">🧭</span>
+    </div>
+    <p class="loading-title">Charting the Course…</p>
+    <p class="loading-sub">
+      Loading a precharted <strong style="color:var(--gold)">10-question deck</strong> for<br/>
+      <span id="loading-char" style="color:var(--gold-l);font-style:italic;"></span>
+    </p>
+    <div class="dots" aria-hidden="true">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     VIEW 3 — QUIZ
+══════════════════════════════════════════════════ -->
+<section id="view-quiz" class="view" role="main">
+
+  <div class="section-hd">
+    <div class="skull-sm" aria-hidden="true">☠️</div>
+    <h2 class="section-title">The Grand Line Trial</h2>
+  </div>
+
+  <div class="quiz-wrap">
+    <!-- Header row -->
+    <div class="quiz-header">
+      <div id="quiz-char-badge" class="quiz-char-badge" aria-label="Character being tested"></div>
+      <div class="quiz-score-live">Answered: <span id="live-answered">0</span> / 10</div>
+    </div>
+
+    <!-- Dot navigator -->
+    <nav class="dots-nav" id="dots-nav" aria-label="Question navigator" role="navigation"></nav>
+
+    <!-- Sliding question area -->
+    <div id="q-slide-wrap" class="q-slide-wrap" aria-live="polite"></div>
+
+    <!-- Navigation -->
+    <div class="quiz-nav">
+      <button id="prev-btn" class="btn-icon" title="Previous question (← arrow key)" aria-label="Previous question" disabled>◀</button>
+      <div class="quiz-nav-center">
+        <div id="nav-counter" style="font-family:'Cinzel',serif;font-size:0.82rem;color:var(--gray);">Q 1 of 10</div>
+        <div class="key-hint">
+          <kbd>←</kbd><kbd>→</kbd> navigate &nbsp;|&nbsp; <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> select
+        </div>
+      </div>
+      <button id="next-btn" class="btn-icon" title="Next question (→ arrow key)" aria-label="Next question">▶</button>
+    </div>
+
+    <!-- Submit (shown when on last question OR user wants to finish early) -->
+    <div id="submit-wrap" style="text-align:center;margin-top:1.5rem;">
+      <button id="submit-quiz-btn" class="btn-primary" style="max-width:300px;margin:0 auto;" aria-label="Submit quiz">
+        ⚓ &nbsp;Submit Quiz
+      </button>
+      <p id="unanswered-warning" style="color:#e67e22;font-size:0.85rem;margin-top:0.6rem;display:none;" role="alert"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     VIEW 4 — RESULTS
+══════════════════════════════════════════════════ -->
+<section id="view-results" class="view" role="main">
+
+  <div class="section-hd">
+    <div class="skull-sm" aria-hidden="true">☠️</div>
+    <h2 class="section-title">Voyage Complete!</h2>
+    <p style="color:var(--gray);font-size:0.8rem;letter-spacing:4px;font-family:'Cinzel',serif;margin-top:0.25rem;">YOUR TREASURE CHART</p>
+  </div>
+
+  <div class="results-wrap">
+
+    <!-- Result icon -->
+    <div id="result-icon" class="result-icon" aria-hidden="true">⚓</div>
+
+    <!-- Score Ring -->
+    <div class="score-ring-wrap">
+      <div id="score-ring" class="score-ring" role="img" aria-label="Score display">
+        <div class="score-inner">
+          <div id="score-num" class="score-num">0</div>
+          <div class="score-sub" id="score-sub">out of 10</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message -->
+    <div class="result-msg-card">
+      <p id="result-msg-main" class="result-msg-main"></p>
+      <p id="result-msg-sub"  class="result-msg-sub"></p>
+    </div>
+
+    <!-- Coupon Earned -->
+    <div id="coupon-section" class="coupon-card" style="display:none;">
+      <div class="coupon-badge" id="coupon-label">YOUR REWARD</div>
+      <span id="coupon-code" class="coupon-code"></span>
+      <div id="coupon-discount" class="coupon-discount"></div>
+      <button id="copy-coupon-btn" class="copy-btn" aria-label="Copy coupon code">📋 &nbsp;Copy Code</button>
+    </div>
+
+    <!-- No coupon -->
+    <div id="no-coupon-section" class="no-coupon" style="display:none;">
+      <p style="font-size:1.1rem;margin-bottom:0.4rem;">💀 No Coupon This Time</p>
+      <p style="font-size:0.85rem;">Answer at least 1 correctly to claim your treasure!</p>
+    </div>
+
+    <!-- Review -->
+    <div style="text-align:center;margin-top:1.5rem;">
+      <button id="toggle-review-btn" class="btn-secondary" aria-expanded="false" aria-controls="review-section">
+        Review Answers ▼
+      </button>
+      <div id="review-section" class="review-section">
+        <div id="review-list" style="margin-top:1rem;"></div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="results-actions">
+      <button id="play-again-btn" class="btn-primary" style="min-width:200px;" aria-label="Play again with same character">
+        🔄 &nbsp;Play Again
+      </button>
+      <button id="new-char-btn" class="btn-secondary" aria-label="Try a new character">
+        🧭 New Character
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- Toast -->
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="/quiz/question-bank.js"></script>
+<script src="/quiz/config.js"></script>
+<script src="/quiz/config.local.js"></script>
+<script src="/quiz/app.js"></script>
+</body>
+</html>
